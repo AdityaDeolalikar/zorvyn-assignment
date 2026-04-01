@@ -1,368 +1,698 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinPulse — Finance Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        heading: ['Space Grotesk', 'sans-serif'],
-                        body: ['DM Sans', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        /* ===== CSS Variables for theming ===== */
-        :root {
-            --bg: #0C0F16;
-            --bg-subtle: #111520;
-            --card: #161B28;
-            --card-hover: #1C2235;
-            --border: #1F2737;
-            --border-light: #2A3348;
-            --fg: #F0F2F5;
-            --fg-muted: #7A8299;
-            --accent: #00E89D;
-            --accent-dim: rgba(0, 232, 157, 0.12);
-            --income: #00E89D;
-            --income-dim: rgba(0, 232, 157, 0.12);
-            --expense: #FF5C72;
-            --expense-dim: rgba(255, 92, 114, 0.12);
-            --gold: #FFB547;
-            --gold-dim: rgba(255, 181, 71, 0.12);
-            --cyan: #22D3EE;
-            --shadow: 0 4px 24px rgba(0,0,0,0.3);
-            --radius: 14px;
-        }
-        [data-theme="light"] {
-            --bg: #F5F6FA;
-            --bg-subtle: #EEF0F5;
-            --card: #FFFFFF;
-            --card-hover: #F8F9FC;
-            --border: #E2E5EC;
-            --border-light: #EDEFF4;
-            --fg: #111827;
-            --fg-muted: #6B7280;
-            --accent: #00C07F;
-            --accent-dim: rgba(0, 192, 127, 0.1);
-            --income: #00C07F;
-            --income-dim: rgba(0, 192, 127, 0.1);
-            --expense: #E8455A;
-            --expense-dim: rgba(232, 69, 90, 0.08);
-            --gold: #D9960F;
-            --gold-dim: rgba(217, 150, 15, 0.1);
-            --cyan: #0891B2;
-            --shadow: 0 4px 24px rgba(0,0,0,0.06);
-        }
+        /* ===================================================
+           WINDOWS 2000 / MICROSOFT 2000 STYLE
+           =================================================== */
 
+        /* Classic Win2k system font stack */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg);
-            color: var(--fg);
+            font-family: 'Tahoma', 'MS Sans Serif', 'Arial', sans-serif;
+            font-size: 11px;
+            background: #3A6EA5; /* Win2k classic blue desktop */
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(255,255,255,0.02) 1px, rgba(255,255,255,0.02) 2px);
             min-height: 100vh;
-            transition: background 0.4s, color 0.4s;
-            background-image:
-                radial-gradient(ellipse at 15% 0%, rgba(0, 232, 157, 0.04) 0%, transparent 55%),
-                radial-gradient(ellipse at 85% 100%, rgba(255, 181, 71, 0.03) 0%, transparent 55%);
-        }
-        [data-theme="light"] body {
-            background-image:
-                radial-gradient(ellipse at 15% 0%, rgba(0, 192, 127, 0.04) 0%, transparent 55%),
-                radial-gradient(ellipse at 85% 100%, rgba(217, 150, 15, 0.03) 0%, transparent 55%);
+            color: #000000;
         }
 
-        h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; }
-
-        /* ===== Scrollbar ===== */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--fg-muted); }
-
-        /* ===== Card base ===== */
-        .dash-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s, background 0.4s;
-        }
-        .dash-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-            border-color: var(--border-light);
-        }
-        [data-theme="light"] .dash-card:hover {
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        /* Win2k color tokens */
+        :root {
+            --win-bg: #D4D0C8;           /* Classic win2k gray */
+            --win-bg-dark: #C0C0C0;      /* Darker gray */
+            --win-face: #ECE9D8;         /* WindowFace color (XP era mix) */
+            --win-title-active: #0A246A; /* Active title bar start */
+            --win-title-end: #A6CAF0;    /* Active title bar end */
+            --win-title-text: #FFFFFF;
+            --win-border-light: #FFFFFF;
+            --win-border-shadow: #808080;
+            --win-border-dark: #404040;
+            --win-border-mid: #DFDFDF;
+            --win-text: #000000;
+            --win-text-muted: #505050;
+            --win-text-disabled: #808080;
+            --win-highlight: #0078D7;    /* Selection blue */
+            --win-highlight-text: #FFFFFF;
+            --win-income: #006400;
+            --win-expense: #8B0000;
+            --win-accent: #000080;
         }
 
-        /* ===== Summary cards with tinted backgrounds ===== */
-        .summary-balance {
-            background: linear-gradient(135deg, var(--accent-dim), transparent 70%), var(--card);
-            border-color: rgba(0, 232, 157, 0.18);
-        }
-        .summary-income {
-            background: linear-gradient(135deg, var(--income-dim), transparent 70%), var(--card);
-            border-color: rgba(0, 232, 157, 0.15);
-        }
-        .summary-expense {
-            background: linear-gradient(135deg, var(--expense-dim), transparent 70%), var(--card);
-            border-color: rgba(255, 92, 114, 0.15);
+        h1, h2, h3, h4 {
+            font-family: 'Tahoma', sans-serif;
+            font-weight: bold;
         }
 
-        /* ===== Role toggle ===== */
-        .role-toggle {
-            display: flex;
-            background: var(--bg-subtle);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            overflow: hidden;
+        /* ---- Scrollbar (Win2k style) ---- */
+        ::-webkit-scrollbar { width: 16px; height: 16px; }
+        ::-webkit-scrollbar-track {
+            background: var(--win-bg-dark);
+            border: 1px solid var(--win-border-shadow);
         }
-        .role-btn {
-            padding: 7px 16px;
-            font-size: 13px;
-            font-weight: 600;
-            font-family: 'Space Grotesk', sans-serif;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            color: var(--fg-muted);
-            transition: all 0.3s;
+        ::-webkit-scrollbar-thumb {
+            background: var(--win-bg);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+        }
+        ::-webkit-scrollbar-button {
+            background: var(--win-bg);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+            height: 16px;
+        }
+
+        /* ---- Window/Panel base (raised) ---- */
+        .win-panel {
+            background: var(--win-face);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+            box-shadow: 1px 1px 0 var(--win-border-shadow);
+        }
+
+        /* ---- Inset / sunken panel ---- */
+        .win-inset {
+            background: #FFFFFF;
+            border-top: 2px solid var(--win-border-shadow);
+            border-left: 2px solid var(--win-border-shadow);
+            border-right: 2px solid var(--win-border-light);
+            border-bottom: 2px solid var(--win-border-light);
+        }
+
+        /* ---- Title bar ---- */
+        .win-titlebar {
+            background: linear-gradient(to right, var(--win-title-active), var(--win-title-end));
+            color: var(--win-title-text);
+            font-weight: bold;
+            font-size: 11px;
+            padding: 3px 6px 4px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            user-select: none;
         }
-        .role-btn.active {
-            background: var(--accent);
-            color: #0C0F16;
+        .win-titlebar-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .win-titlebar .win-title-text {
+            flex: 1;
+            font-size: 11px;
+            letter-spacing: 0;
         }
 
-        /* ===== Form elements ===== */
-        .input-field {
-            width: 100%;
-            padding: 10px 14px;
-            background: var(--bg-subtle);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--fg);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.25s, box-shadow 0.25s;
-        }
-        .input-field:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-dim);
-        }
-        .input-field::placeholder { color: var(--fg-muted); }
-        select.input-field { cursor: pointer; }
-        select.input-field option { background: var(--card); color: var(--fg); }
-
-        /* ===== Buttons ===== */
-        .btn-primary {
-            padding: 10px 20px;
-            background: var(--accent);
-            color: #0C0F16;
-            border: none;
-            border-radius: 10px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 14px;
+        /* ---- Win2k Buttons ---- */
+        .win-btn {
+            background: var(--win-bg);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+            padding: 3px 12px 4px;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+            color: var(--win-text);
+            min-width: 75px;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
         }
-        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0, 232, 157, 0.3); }
-        .btn-primary:active { transform: scale(0.97); }
-        .btn-ghost {
-            padding: 10px 20px;
-            background: transparent;
-            color: var(--fg-muted);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
+        .win-btn:active {
+            border-top: 2px solid var(--win-border-dark);
+            border-left: 2px solid var(--win-border-dark);
+            border-right: 2px solid var(--win-border-light);
+            border-bottom: 2px solid var(--win-border-light);
+            padding: 4px 11px 3px 13px;
         }
-        .btn-ghost:hover { border-color: var(--fg-muted); color: var(--fg); }
-        .btn-icon {
-            width: 34px; height: 34px;
+        .win-btn:focus {
+            outline: 1px dotted #000;
+            outline-offset: -4px;
+        }
+        .win-btn.win-btn-default {
+            border: 2px solid #000080;
+        }
+        .win-btn-icon {
+            background: var(--win-bg);
+            border-top: 1px solid var(--win-border-light);
+            border-left: 1px solid var(--win-border-light);
+            border-right: 1px solid var(--win-border-dark);
+            border-bottom: 1px solid var(--win-border-dark);
+            width: 22px; height: 22px;
             display: inline-flex; align-items: center; justify-content: center;
-            border-radius: 8px; border: none;
-            background: transparent; color: var(--fg-muted);
-            cursor: pointer; transition: all 0.2s; font-size: 13px;
+            cursor: pointer; font-size: 11px; color: var(--win-text);
         }
-        .btn-icon:hover { background: var(--bg-subtle); color: var(--fg); }
-        .btn-icon.danger:hover { background: var(--expense-dim); color: var(--expense); }
+        .win-btn-icon:active {
+            border-top: 1px solid var(--win-border-dark);
+            border-left: 1px solid var(--win-border-dark);
+            border-right: 1px solid var(--win-border-light);
+            border-bottom: 1px solid var(--win-border-light);
+        }
+        .win-btn-icon:hover { background: var(--win-face); }
 
-        /* ===== Transaction item ===== */
+        /* ---- Form controls ---- */
+        .win-input {
+            background: #FFFFFF;
+            border-top: 1px solid var(--win-border-shadow);
+            border-left: 1px solid var(--win-border-shadow);
+            border-right: 1px solid var(--win-border-mid);
+            border-bottom: 1px solid var(--win-border-mid);
+            box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+            padding: 2px 4px;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
+            color: var(--win-text);
+            outline: none;
+            width: 100%;
+        }
+        .win-input:focus {
+            border-color: var(--win-highlight);
+        }
+        select.win-input {
+            cursor: pointer;
+            height: 21px;
+            padding: 1px 2px;
+        }
+
+        /* ---- Toolbar ---- */
+        .win-toolbar {
+            background: var(--win-bg);
+            border-bottom: 1px solid var(--win-border-shadow);
+            border-top: 1px solid var(--win-border-light);
+            padding: 2px 4px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .win-toolbar-sep {
+            width: 1px;
+            height: 22px;
+            background: var(--win-border-shadow);
+            margin: 0 4px;
+            box-shadow: 1px 0 0 var(--win-border-light);
+        }
+
+        /* ---- Menubar ---- */
+        .win-menubar {
+            background: var(--win-face);
+            display: flex;
+            align-items: center;
+            gap: 0;
+            padding: 0 2px;
+            border-bottom: 1px solid var(--win-border-shadow);
+            font-size: 11px;
+        }
+        .win-menu-item {
+            padding: 2px 8px;
+            cursor: pointer;
+            white-space: nowrap;
+            color: var(--win-text);
+        }
+        .win-menu-item:hover {
+            background: var(--win-highlight);
+            color: var(--win-highlight-text);
+        }
+
+        /* ---- Group box (fieldset style) ---- */
+        .win-groupbox {
+            border: 1px solid var(--win-border-shadow);
+            border-top: 1px solid var(--win-border-light);
+            padding: 12px 10px 8px;
+            position: relative;
+            background: var(--win-face);
+        }
+        .win-groupbox-label {
+            position: absolute;
+            top: -7px; left: 8px;
+            background: var(--win-face);
+            padding: 0 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* ---- Status bar ---- */
+        .win-statusbar {
+            background: var(--win-bg);
+            border-top: 1px solid var(--win-border-shadow);
+            border-bottom: 1px solid var(--win-border-light);
+            padding: 2px 6px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--win-text);
+        }
+        .win-statusbar-cell {
+            border-top: 1px solid var(--win-border-shadow);
+            border-left: 1px solid var(--win-border-shadow);
+            border-right: 1px solid var(--win-border-light);
+            border-bottom: 1px solid var(--win-border-light);
+            padding: 1px 8px;
+            font-size: 11px;
+        }
+
+        /* ---- Tab control ---- */
+        .win-tabs {
+            display: flex;
+            gap: 2px;
+            padding: 4px 4px 0;
+            background: var(--win-bg);
+            border-bottom: 2px solid var(--win-border-shadow);
+        }
+        .win-tab {
+            padding: 3px 14px;
+            background: var(--win-bg-dark);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: none;
+            font-size: 11px;
+            cursor: pointer;
+            position: relative;
+            bottom: -2px;
+        }
+        .win-tab.active {
+            background: var(--win-face);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-face);
+            font-weight: bold;
+            z-index: 2;
+            bottom: -2px;
+        }
+
+        /* ---- List item (transaction) ---- */
         .txn-item {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 14px 18px;
-            border-radius: 12px;
-            transition: background 0.2s;
-            border-bottom: 1px solid var(--border);
+            gap: 8px;
+            padding: 3px 6px;
+            border-bottom: 1px solid var(--win-border-mid);
+            font-size: 11px;
         }
         .txn-item:last-child { border-bottom: none; }
-        .txn-item:hover { background: var(--card-hover); }
+        .txn-item:hover { background: #C5D5EA; }
+        .txn-item.selected { background: var(--win-highlight); color: var(--win-highlight-text); }
         .txn-icon {
-            width: 42px; height: 42px;
-            border-radius: 11px;
+            width: 24px; height: 24px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 16px;
+            font-size: 13px;
             flex-shrink: 0;
         }
 
-        /* ===== Modal ===== */
+        /* ---- Modal / Dialog ---- */
         .modal-overlay {
             position: fixed; inset: 0; z-index: 100;
-            background: rgba(0,0,0,0.55);
-            backdrop-filter: blur(6px);
+            background: rgba(0,0,0,0.4);
             display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none;
-            transition: opacity 0.3s;
+            transition: opacity 0.15s;
         }
         .modal-overlay.open { opacity: 1; pointer-events: auto; }
         .modal-box {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 28px;
-            width: 90%; max-width: 460px;
-            box-shadow: 0 24px 64px rgba(0,0,0,0.4);
-            transform: translateY(20px) scale(0.97);
-            transition: transform 0.3s;
+            background: var(--win-face);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+            box-shadow: 4px 4px 8px rgba(0,0,0,0.4);
+            width: 90%; max-width: 400px;
         }
-        .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+        .modal-body { padding: 12px 14px 14px; }
 
-        /* ===== Toast ===== */
+        /* ---- Window caption buttons ---- */
+        .win-caption-btn {
+            width: 18px; height: 16px;
+            background: var(--win-bg);
+            border-top: 1px solid var(--win-border-light);
+            border-left: 1px solid var(--win-border-light);
+            border-right: 1px solid var(--win-border-dark);
+            border-bottom: 1px solid var(--win-border-dark);
+            display: inline-flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 9px; color: #000; font-weight: bold;
+            font-family: 'Marlett', 'Wingdings', monospace;
+            text-decoration: none;
+        }
+        .win-caption-btn:active {
+            border-top: 1px solid var(--win-border-dark);
+            border-left: 1px solid var(--win-border-dark);
+            border-right: 1px solid var(--win-border-light);
+            border-bottom: 1px solid var(--win-border-light);
+        }
+
+        /* ---- Progress bar ---- */
+        .win-progress {
+            background: #FFFFFF;
+            border-top: 1px solid var(--win-border-shadow);
+            border-left: 1px solid var(--win-border-shadow);
+            border-right: 1px solid var(--win-border-light);
+            border-bottom: 1px solid var(--win-border-light);
+            height: 14px;
+            overflow: hidden;
+            position: relative;
+        }
+        .win-progress-bar {
+            height: 100%;
+            background: var(--win-highlight);
+            background-image: repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                transparent 8px,
+                rgba(255,255,255,0.2) 8px,
+                rgba(255,255,255,0.2) 10px
+            );
+            transition: width 0.6s;
+        }
+
+        /* ---- Radio/checkbox custom ---- */
+        .win-radio-group {
+            display: flex;
+            gap: 16px;
+        }
+        .win-radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+        .win-type-toggle {
+            display: flex;
+            background: var(--win-bg);
+            border: 1px solid var(--win-border-shadow);
+        }
+        .win-type-btn {
+            padding: 3px 14px;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--win-text);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .win-type-btn.active {
+            background: var(--win-highlight);
+            color: var(--win-highlight-text);
+        }
+
+        /* ---- Toast ---- */
         #toast-container {
-            position: fixed; top: 20px; right: 20px; z-index: 200;
-            display: flex; flex-direction: column; gap: 10px;
+            position: fixed; bottom: 28px; right: 8px; z-index: 200;
+            display: flex; flex-direction: column-reverse; gap: 4px;
         }
         .toast {
-            padding: 12px 20px;
-            border-radius: 12px;
-            font-size: 14px; font-weight: 500;
-            display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            background: var(--win-face);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            padding: 6px 12px;
+            font-size: 11px;
+            display: flex; align-items: center; gap: 8px;
             transform: translateX(120%);
-            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            background: var(--card);
-            border: 1px solid var(--border);
-            color: var(--fg);
+            transition: transform 0.2s;
+            min-width: 220px;
         }
         .toast.show { transform: translateX(0); }
-        .toast-success i { color: var(--accent); }
-        .toast-error i { color: var(--expense); }
-        .toast-info i { color: var(--cyan); }
+        .toast-success i { color: var(--win-income); }
+        .toast-error i { color: var(--win-expense); }
+        .toast-info i { color: var(--win-accent); }
 
-        /* ===== Insights card accent bar ===== */
-        .insight-card { position: relative; overflow: hidden; }
-        .insight-card::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 3px;
-            border-radius: 0 3px 3px 0;
-        }
-        .insight-accent::before { background: var(--accent); }
-        .insight-gold::before { background: var(--gold); }
-        .insight-cyan::before { background: var(--cyan); }
-
-        /* ===== Type radio buttons ===== */
-        .type-radio { display: flex; gap: 10px; }
-        .type-radio label {
-            flex: 1;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            font-weight: 600; font-size: 14px;
-            transition: all 0.2s;
-            color: var(--fg-muted);
-        }
-        .type-radio input { display: none; }
-        .type-radio input[value="income"]:checked + label {
-            border-color: var(--income);
-            background: var(--income-dim);
-            color: var(--income);
-        }
-        .type-radio input[value="expense"]:checked + label {
-            border-color: var(--expense);
-            background: var(--expense-dim);
-            color: var(--expense);
+        /* ---- Layout ---- */
+        .app-window {
+            background: var(--win-face);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+            box-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            margin: 8px auto;
+            max-width: 1280px;
         }
 
-        /* ===== Empty state ===== */
-        .empty-state {
-            text-align: center;
-            padding: 48px 24px;
-            color: var(--fg-muted);
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            padding: 8px;
         }
-        .empty-state i { font-size: 40px; margin-bottom: 16px; opacity: 0.4; }
-
-        /* ===== Animations ===== */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(18px); }
-            to { opacity: 1; transform: translateY(0); }
+        .summary-card {
+            background: var(--win-face);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+            padding: 0;
+            overflow: hidden;
         }
-        .anim-in {
-            animation: fadeInUp 0.5s ease-out both;
+        .summary-card .sum-inner {
+            padding: 8px 10px;
         }
-        .anim-delay-1 { animation-delay: 0.08s; }
-        .anim-delay-2 { animation-delay: 0.16s; }
-        .anim-delay-3 { animation-delay: 0.24s; }
-        .anim-delay-4 { animation-delay: 0.32s; }
-        .anim-delay-5 { animation-delay: 0.4s; }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.5); }
-        }
-        .pulse-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: var(--accent);
-            animation: pulse-dot 2s ease-in-out infinite;
+        .summary-value {
+            font-size: 22px;
+            font-weight: bold;
+            font-family: 'Tahoma', sans-serif;
+            line-height: 1;
         }
 
-        /* ===== Chart empty overlay ===== */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 6px;
+            padding: 0 8px 8px;
+        }
+        .chart-panel {
+            background: var(--win-face);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+            overflow: hidden;
+        }
+        .chart-panel .chart-body {
+            padding: 8px;
+            background: #FFFFFF;
+            border-top: 1px solid var(--win-border-shadow);
+            border-left: 1px solid var(--win-border-shadow);
+            border-right: 1px solid var(--win-border-light);
+            border-bottom: 1px solid var(--win-border-light);
+            margin: 4px 6px 6px;
+        }
         .chart-wrap { position: relative; }
         .chart-empty {
             position: absolute; inset: 0;
             display: flex; align-items: center; justify-content: center;
-            flex-direction: column; gap: 8px;
-            color: var(--fg-muted); font-size: 14px;
-            pointer-events: none;
+            flex-direction: column; gap: 6px;
+            color: var(--win-text-muted); font-size: 11px;
         }
 
-        /* ===== Filter bar responsive ===== */
+        .insights-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            padding: 0 8px 8px;
+        }
+        .insight-panel {
+            background: var(--win-face);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+            overflow: hidden;
+        }
+        .insight-panel .insight-body {
+            padding: 8px 10px;
+        }
+
+        .txn-section {
+            margin: 0 8px 8px;
+            background: var(--win-face);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+        }
+
         .filter-bar {
-            display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+            padding: 4px 6px;
+            background: var(--win-bg);
+            border-bottom: 1px solid var(--win-border-shadow);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+        .filter-bar label {
+            font-size: 11px;
+            white-space: nowrap;
         }
 
-        /* ===== Reduced motion ===== */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
+        /* list header */
+        .txn-list-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 2px 6px;
+            background: var(--win-bg-dark);
+            border-bottom: 1px solid var(--win-border-shadow);
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .txn-list-header > div {
+            border-right: 1px solid var(--win-border-shadow);
+            padding-right: 4px;
+        }
+        .txn-list-header > div:last-child { border-right: none; }
+
+        /* role toggle */
+        .role-toggle {
+            display: flex;
+            background: var(--win-bg);
+            border: 1px solid var(--win-border-shadow);
+        }
+        .role-btn {
+            padding: 3px 10px;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--win-text);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .role-btn.active {
+            background: var(--win-highlight);
+            color: var(--win-highlight-text);
+        }
+
+        /* empty state */
+        .empty-state {
+            text-align: center;
+            padding: 24px;
+            color: var(--win-text-muted);
+            font-size: 11px;
+        }
+        .empty-state i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 8px;
+            opacity: 0.5;
+        }
+
+        /* Win2k label (column header) */
+        .col-header {
+            background: var(--win-bg);
+            border-top: 2px solid var(--win-border-light);
+            border-left: 2px solid var(--win-border-light);
+            border-right: 2px solid var(--win-border-dark);
+            border-bottom: 2px solid var(--win-border-dark);
+            padding: 2px 6px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: default;
+        }
+
+        /* dialog icon */
+        .dlg-icon {
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        /* ---- Taskbar ---- */
+        .taskbar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 50;
+            background: linear-gradient(to bottom, #245EDC 0%, #1340AA 4%, #1D4FD8 8%, #1D4FD8 92%, #0D2FAA 96%, #000EA0 100%);
+            border-top: 1px solid #3572D4;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            gap: 4px;
+        }
+        .taskbar-start {
+            background: linear-gradient(to right, #238023, #39B039);
+            border-top: 1px solid #5BC85B;
+            border-left: 1px solid #5BC85B;
+            border-right: 1px solid #1A601A;
+            border-bottom: 1px solid #1A601A;
+            padding: 2px 10px 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
+            font-family: 'Tahoma', sans-serif;
+            color: #FFFFFF;
+            cursor: pointer;
+            border-radius: 0 10px 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .taskbar-clock {
+            background: rgba(0,0,0,0.2);
+            border: 1px inset rgba(0,0,50,0.5);
+            padding: 2px 8px;
+            font-size: 11px;
+            font-family: 'Tahoma', sans-serif;
+            color: #FFFFFF;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .taskbar-item {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 2px 8px;
+            font-size: 11px;
+            font-family: 'Tahoma', sans-serif;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            min-width: 120px;
+            max-width: 160px;
+        }
+        .taskbar-item.active-window {
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(0,0,0,0.5);
+            border-left: 1px solid rgba(0,0,0,0.5);
+        }
+
+        /* body bottom padding for taskbar */
+        body { padding-bottom: 32px; }
+
+        @media (max-width: 700px) {
+            .summary-grid { grid-template-columns: 1fr; }
+            .charts-row { grid-template-columns: 1fr; }
+            .insights-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -370,204 +700,281 @@
     <!-- Toast container -->
     <div id="toast-container"></div>
 
-    <!-- ===== HEADER ===== -->
-    <header class="sticky top-0 z-50" style="background: var(--bg); border-bottom: 1px solid var(--border); backdrop-filter: blur(12px); background: rgba(from var(--bg) r g b / 0.85);">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 gap-4">
-            <!-- Logo -->
-            <div class="flex items-center gap-3 flex-shrink-0">
-                <div style="width:34px;height:34px;border-radius:9px;background:var(--accent);display:flex;align-items:center;justify-content:center;">
-                    <i class="fa-solid fa-chart-pie" style="color:#0C0F16;font-size:16px;"></i>
-                </div>
-                <h1 class="font-heading font-bold text-lg tracking-tight" style="color:var(--fg);">FinPulse</h1>
+    <!-- ===== MAIN APPLICATION WINDOW ===== -->
+    <div class="app-window">
+
+        <!-- Title bar -->
+        <div class="win-titlebar">
+            <div class="win-titlebar-icon">
+                <i class="fa-solid fa-chart-pie" style="font-size:12px;"></i>
             </div>
-            <!-- Right controls -->
-            <div class="flex items-center gap-3">
-                <!-- Role toggle -->
-                <div class="role-toggle">
-                    <button class="role-btn active" data-role="viewer" onclick="setRole('viewer')">
-                        <i class="fa-solid fa-eye" style="font-size:12px;"></i>
-                        <span class="hidden sm:inline">Viewer</span>
-                    </button>
-                    <button class="role-btn" data-role="admin" onclick="setRole('admin')">
-                        <i class="fa-solid fa-shield-halved" style="font-size:12px;"></i>
-                        <span class="hidden sm:inline">Admin</span>
-                    </button>
-                </div>
-                <!-- Theme toggle -->
-                <button class="btn-icon" onclick="toggleTheme()" aria-label="Toggle theme" id="theme-btn">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
-                <!-- Export -->
-                <button class="btn-icon" onclick="exportCSV()" aria-label="Export CSV" title="Export CSV">
-                    <i class="fa-solid fa-download"></i>
-                </button>
+            <span class="win-title-text">FinPulse — Finance Dashboard</span>
+            <div style="display:flex;gap:2px;margin-left:auto;">
+                <span class="win-caption-btn" title="Minimize">&#x2212;</span>
+                <span class="win-caption-btn" title="Maximize">&#x25A1;</span>
+                <span class="win-caption-btn" title="Close" style="background:#C75050;color:#fff;border-color:#E07070 #801010 #801010 #E07070;" onclick="void(0)">&#x2715;</span>
             </div>
         </div>
-    </header>
 
-    <!-- ===== MAIN CONTENT ===== -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <!-- Menubar -->
+        <div class="win-menubar">
+            <span class="win-menu-item"><u>F</u>ile</span>
+            <span class="win-menu-item"><u>E</u>dit</span>
+            <span class="win-menu-item"><u>V</u>iew</span>
+            <span class="win-menu-item"><u>T</u>ools</span>
+            <span class="win-menu-item"><u>H</u>elp</span>
+        </div>
 
-        <!-- Summary Cards -->
-        <section class="grid grid-cols-1 sm:grid-cols-3 gap-5" id="summary-section" aria-label="Financial summary">
-            <div class="dash-card summary-balance p-6 anim-in anim-delay-1">
-                <div class="flex items-center justify-between mb-3">
-                    <span style="color:var(--fg-muted);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Total Balance</span>
-                    <div class="pulse-dot"></div>
-                </div>
-                <div class="font-heading font-bold text-3xl" style="color:var(--accent);" id="total-balance">$0</div>
-                <div style="color:var(--fg-muted);font-size:13px;margin-top:6px;" id="balance-trend"></div>
-            </div>
-            <div class="dash-card summary-income p-6 anim-in anim-delay-2">
-                <div class="flex items-center justify-between mb-3">
-                    <span style="color:var(--fg-muted);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Income</span>
-                    <i class="fa-solid fa-arrow-trend-up" style="color:var(--income);font-size:14px;"></i>
-                </div>
-                <div class="font-heading font-bold text-3xl" style="color:var(--income);" id="total-income">$0</div>
-                <div style="color:var(--fg-muted);font-size:13px;margin-top:6px;" id="income-count"></div>
-            </div>
-            <div class="dash-card summary-expense p-6 anim-in anim-delay-3">
-                <div class="flex items-center justify-between mb-3">
-                    <span style="color:var(--fg-muted);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Expenses</span>
-                    <i class="fa-solid fa-arrow-trend-down" style="color:var(--expense);font-size:14px;"></i>
-                </div>
-                <div class="font-heading font-bold text-3xl" style="color:var(--expense);" id="total-expenses">$0</div>
-                <div style="color:var(--fg-muted);font-size:13px;margin-top:6px;" id="expense-count"></div>
-            </div>
-        </section>
-
-        <!-- Charts Row -->
-        <section class="grid grid-cols-1 lg:grid-cols-5 gap-5 anim-in anim-delay-4" aria-label="Charts">
-            <!-- Balance Trend (wider) -->
-            <div class="dash-card p-6 lg:col-span-3">
-                <h3 class="font-heading font-semibold text-base mb-4" style="color:var(--fg);">Balance Trend</h3>
-                <div class="chart-wrap" style="height:260px;">
-                    <canvas id="balance-chart"></canvas>
-                    <div class="chart-empty" id="balance-empty" style="display:none;">
-                        <i class="fa-solid fa-chart-line"></i>
-                        <span>No data to display</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Spending Breakdown -->
-            <div class="dash-card p-6 lg:col-span-2">
-                <h3 class="font-heading font-semibold text-base mb-4" style="color:var(--fg);">Spending Breakdown</h3>
-                <div class="chart-wrap" style="height:260px;">
-                    <canvas id="category-chart"></canvas>
-                    <div class="chart-empty" id="category-empty" style="display:none;">
-                        <i class="fa-solid fa-chart-pie"></i>
-                        <span>No expenses to display</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Insights Row -->
-        <section class="grid grid-cols-1 sm:grid-cols-3 gap-5 anim-in anim-delay-5" aria-label="Insights" id="insights-section">
-            <!-- Populated by JS -->
-        </section>
-
-        <!-- Transactions Section -->
-        <section class="dash-card anim-in" style="animation-delay:0.48s;" aria-label="Transactions">
-            <div class="p-6 pb-0">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
-                    <h3 class="font-heading font-semibold text-lg" style="color:var(--fg);">Transactions</h3>
-                    <button class="btn-primary admin-only" style="display:none;" onclick="openAddModal()">
-                        <i class="fa-solid fa-plus" style="margin-right:6px;font-size:12px;"></i> Add Transaction
+        <!-- Toolbar -->
+        <div class="win-toolbar">
+            <!-- Role toggle -->
+            <div style="display:flex;align-items:center;gap:4px;margin-right:4px;">
+                <span style="font-size:11px;">Mode:</span>
+                <div class="role-toggle">
+                    <button class="role-btn active" data-role="viewer" onclick="setRole('viewer')">
+                        <i class="fa-solid fa-eye" style="font-size:10px;"></i> Viewer
+                    </button>
+                    <button class="role-btn" data-role="admin" onclick="setRole('admin')">
+                        <i class="fa-solid fa-shield-halved" style="font-size:10px;"></i> Admin
                     </button>
                 </div>
-                <!-- Filters -->
-                <div class="filter-bar pb-5" style="border-bottom:1px solid var(--border);">
-                    <div class="relative flex-1 min-w-[180px]">
-                        <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--fg-muted);font-size:13px;"></i>
-                        <input type="text" class="input-field" style="padding-left:36px;" placeholder="Search transactions..." id="search-input" oninput="handleFilterChange()">
-                    </div>
-                    <select class="input-field" style="width:auto;min-width:140px;" id="category-filter" onchange="handleFilterChange()">
-                        <option value="all">All Categories</option>
-                    </select>
-                    <select class="input-field" style="width:auto;min-width:120px;" id="type-filter" onchange="handleFilterChange()">
-                        <option value="all">All Types</option>
-                        <option value="income">Income</option>
-                        <option value="expense">Expense</option>
-                    </select>
-                    <select class="input-field" style="width:auto;min-width:150px;" id="sort-select" onchange="handleFilterChange()">
-                        <option value="date-desc">Newest First</option>
-                        <option value="date-asc">Oldest First</option>
-                        <option value="amount-desc">Highest Amount</option>
-                        <option value="amount-asc">Lowest Amount</option>
-                    </select>
+            </div>
+            <div class="win-toolbar-sep"></div>
+            <button class="win-btn" onclick="exportCSV()" title="Export to CSV">
+                <i class="fa-solid fa-download" style="font-size:10px;"></i> Export CSV
+            </button>
+            <button class="win-btn admin-only" style="display:none;" onclick="openAddModal()">
+                <i class="fa-solid fa-plus" style="font-size:10px;"></i> Add Transaction
+            </button>
+            <div class="win-toolbar-sep"></div>
+            <button class="win-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">
+                <i class="fa-solid fa-moon" style="font-size:10px;"></i> Toggle Theme
+            </button>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-grid" aria-label="Financial summary">
+            <div class="summary-card">
+                <div class="win-titlebar" style="background:linear-gradient(to right,#0A246A,#4472C4);">
+                    <i class="fa-solid fa-wallet" style="font-size:11px;"></i>
+                    <span style="font-size:11px;font-weight:bold;margin-left:4px;">Total Balance</span>
+                </div>
+                <div class="sum-inner">
+                    <div class="summary-value" style="color:#000080;" id="total-balance">$0</div>
+                    <div style="font-size:10px;color:var(--win-text-muted);margin-top:4px;" id="balance-trend"></div>
                 </div>
             </div>
-            <!-- Transaction List -->
-            <div id="transaction-list" style="max-height:520px;overflow-y:auto;"></div>
-        </section>
-    </main>
+            <div class="summary-card">
+                <div class="win-titlebar" style="background:linear-gradient(to right,#006400,#3CB371);">
+                    <i class="fa-solid fa-arrow-trend-up" style="font-size:11px;"></i>
+                    <span style="font-size:11px;font-weight:bold;margin-left:4px;">Income</span>
+                </div>
+                <div class="sum-inner">
+                    <div class="summary-value" style="color:#006400;" id="total-income">$0</div>
+                    <div style="font-size:10px;color:var(--win-text-muted);margin-top:4px;" id="income-count"></div>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="win-titlebar" style="background:linear-gradient(to right,#8B0000,#CD5C5C);">
+                    <i class="fa-solid fa-arrow-trend-down" style="font-size:11px;"></i>
+                    <span style="font-size:11px;font-weight:bold;margin-left:4px;">Expenses</span>
+                </div>
+                <div class="sum-inner">
+                    <div class="summary-value" style="color:#8B0000;" id="total-expenses">$0</div>
+                    <div style="font-size:10px;color:var(--win-text-muted);margin-top:4px;" id="expense-count"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="charts-row" aria-label="Charts">
+            <div class="chart-panel">
+                <div class="win-titlebar" style="font-size:11px;">
+                    <i class="fa-solid fa-chart-line" style="font-size:11px;"></i>
+                    <span style="margin-left:4px;font-size:11px;font-weight:bold;">Balance Trend</span>
+                </div>
+                <div class="chart-body">
+                    <div class="chart-wrap" style="height:200px;">
+                        <canvas id="balance-chart"></canvas>
+                        <div class="chart-empty" id="balance-empty" style="display:none;">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>No data to display</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-panel">
+                <div class="win-titlebar" style="font-size:11px;">
+                    <i class="fa-solid fa-chart-pie" style="font-size:11px;"></i>
+                    <span style="margin-left:4px;font-size:11px;font-weight:bold;">Spending Breakdown</span>
+                </div>
+                <div class="chart-body">
+                    <div class="chart-wrap" style="height:200px;">
+                        <canvas id="category-chart"></canvas>
+                        <div class="chart-empty" id="category-empty" style="display:none;">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <span>No expenses to display</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insights Row -->
+        <div class="insights-row" aria-label="Insights" id="insights-section"></div>
+
+        <!-- Transactions Section -->
+        <div class="txn-section" aria-label="Transactions">
+            <div class="win-titlebar">
+                <i class="fa-solid fa-list" style="font-size:11px;"></i>
+                <span style="margin-left:4px;font-size:11px;font-weight:bold;">Transactions</span>
+            </div>
+
+            <!-- Filters toolbar -->
+            <div class="filter-bar">
+                <label>Search:</label>
+                <input type="text" class="win-input" style="width:160px;" placeholder="Search..." id="search-input" oninput="handleFilterChange()">
+                <label>Category:</label>
+                <select class="win-input" style="width:130px;" id="category-filter" onchange="handleFilterChange()">
+                    <option value="all">All Categories</option>
+                </select>
+                <label>Type:</label>
+                <select class="win-input" style="width:90px;" id="type-filter" onchange="handleFilterChange()">
+                    <option value="all">All</option>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+                <label>Sort:</label>
+                <select class="win-input" style="width:140px;" id="sort-select" onchange="handleFilterChange()">
+                    <option value="date-desc">Newest First</option>
+                    <option value="date-asc">Oldest First</option>
+                    <option value="amount-desc">Highest Amount</option>
+                    <option value="amount-asc">Lowest Amount</option>
+                </select>
+            </div>
+
+            <!-- Column headers -->
+            <div class="txn-list-header">
+                <div style="width:28px;"></div>
+                <div style="flex:2;">Description</div>
+                <div style="width:120px;">Category</div>
+                <div style="width:90px;">Date</div>
+                <div style="width:100px;text-align:right;">Amount</div>
+                <div style="width:50px;">Type</div>
+                <div style="width:60px;">Actions</div>
+            </div>
+
+            <!-- Transaction list -->
+            <div id="transaction-list" style="max-height:400px;overflow-y:auto;background:#FFFFFF;border-top:1px solid var(--win-border-shadow);border-left:1px solid var(--win-border-shadow);margin:0;"></div>
+        </div>
+
+        <!-- Status bar -->
+        <div class="win-statusbar">
+            <span class="win-statusbar-cell" id="status-txn-count">0 transactions</span>
+            <span class="win-statusbar-cell" id="status-balance">Balance: $0</span>
+            <span class="win-statusbar-cell" style="margin-left:auto;" id="status-date"></span>
+        </div>
+
+    </div><!-- /app-window -->
 
     <!-- ===== ADD/EDIT MODAL ===== -->
     <div class="modal-overlay" id="txn-modal" onclick="handleModalOverlayClick(event)">
         <div class="modal-box" onclick="event.stopPropagation()">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="font-heading font-semibold text-lg" id="modal-title" style="color:var(--fg);">Add Transaction</h3>
-                <button class="btn-icon" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="win-titlebar">
+                <i class="fa-solid fa-pen-to-square" style="font-size:11px;"></i>
+                <span class="win-title-text" id="modal-title" style="font-size:11px;">Add Transaction</span>
+                <div style="margin-left:auto;">
+                    <span class="win-caption-btn" onclick="closeModal()">&#x2715;</span>
+                </div>
             </div>
-            <form id="txn-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
-                <input type="hidden" id="form-id">
-                <div>
-                    <label style="font-size:13px;font-weight:600;color:var(--fg-muted);display:block;margin-bottom:6px;">Description</label>
-                    <input type="text" class="input-field" id="form-desc" placeholder="e.g. Grocery shopping" required>
-                </div>
-                <div>
-                    <label style="font-size:13px;font-weight:600;color:var(--fg-muted);display:block;margin-bottom:6px;">Amount</label>
-                    <input type="number" class="input-field" id="form-amount" placeholder="0.00" min="0.01" step="0.01" required>
-                </div>
-                <div>
-                    <label style="font-size:13px;font-weight:600;color:var(--fg-muted);display:block;margin-bottom:6px;">Category</label>
-                    <select class="input-field" id="form-category" required></select>
-                </div>
-                <div>
-                    <label style="font-size:13px;font-weight:600;color:var(--fg-muted);display:block;margin-bottom:6px;">Date</label>
-                    <input type="date" class="input-field" id="form-date" required>
-                </div>
-                <div>
-                    <label style="font-size:13px;font-weight:600;color:var(--fg-muted);display:block;margin-bottom:6px;">Type</label>
-                    <div class="type-radio">
-                        <input type="radio" name="form-type" value="income" id="type-income">
-                        <label for="type-income"><i class="fa-solid fa-arrow-up"></i> Income</label>
-                        <input type="radio" name="form-type" value="expense" id="type-expense" checked>
-                        <label for="type-expense"><i class="fa-solid fa-arrow-down"></i> Expense</label>
+            <div class="modal-body">
+                <form id="txn-form" onsubmit="handleFormSubmit(event)">
+                    <input type="hidden" id="form-id">
+                    <table style="width:100%;border-collapse:collapse;font-size:11px;" cellpadding="4">
+                        <tr>
+                            <td style="white-space:nowrap;width:90px;"><label for="form-desc">Description:</label></td>
+                            <td><input type="text" class="win-input" id="form-desc" placeholder="e.g. Grocery shopping" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="form-amount">Amount ($):</label></td>
+                            <td><input type="number" class="win-input" id="form-amount" placeholder="0.00" min="0.01" step="0.01" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="form-category">Category:</label></td>
+                            <td><select class="win-input" id="form-category" required></select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="form-date">Date:</label></td>
+                            <td><input type="date" class="win-input" id="form-date" required></td>
+                        </tr>
+                        <tr>
+                            <td><label>Type:</label></td>
+                            <td>
+                                <div class="win-radio-group">
+                                    <label>
+                                        <input type="radio" name="form-type" value="income" id="type-income">
+                                        Income
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="form-type" value="expense" id="type-expense" checked>
+                                        Expense
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid var(--win-border-shadow);">
+                        <button type="submit" class="win-btn win-btn-default" id="form-submit-btn">OK</button>
+                        <button type="button" class="win-btn" onclick="closeModal()">Cancel</button>
                     </div>
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button type="button" class="btn-ghost flex-1" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn-primary flex-1" id="form-submit-btn">Save Transaction</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 
     <!-- ===== DELETE CONFIRMATION MODAL ===== -->
     <div class="modal-overlay" id="delete-modal" onclick="handleDeleteOverlayClick(event)">
-        <div class="modal-box" style="max-width:380px;text-align:center;" onclick="event.stopPropagation()">
-            <div style="width:56px;height:56px;border-radius:50%;background:var(--expense-dim);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-                <i class="fa-solid fa-trash-can" style="color:var(--expense);font-size:20px;"></i>
+        <div class="modal-box" style="max-width:340px;" onclick="event.stopPropagation()">
+            <div class="win-titlebar">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size:11px;"></i>
+                <span class="win-title-text" style="font-size:11px;">Confirm Delete</span>
+                <div style="margin-left:auto;">
+                    <span class="win-caption-btn" onclick="closeDeleteModal()">&#x2715;</span>
+                </div>
             </div>
-            <h3 class="font-heading font-semibold text-lg mb-2" style="color:var(--fg);">Delete Transaction</h3>
-            <p style="color:var(--fg-muted);font-size:14px;margin-bottom:24px;">Are you sure you want to delete this transaction? This action cannot be undone.</p>
-            <input type="hidden" id="delete-id">
-            <div class="flex gap-3">
-                <button class="btn-ghost flex-1" onclick="closeDeleteModal()">Cancel</button>
-                <button class="btn-primary flex-1" style="background:var(--expense);" onclick="confirmDelete()">Delete</button>
+            <div class="modal-body" style="display:flex;align-items:flex-start;gap:12px;">
+                <div class="dlg-icon" style="color:#FF8C00;">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div style="flex:1;">
+                    <div style="font-weight:bold;font-size:11px;margin-bottom:6px;">Delete Transaction</div>
+                    <p style="font-size:11px;color:var(--win-text);margin-bottom:14px;">Are you sure you want to permanently delete this transaction?</p>
+                    <input type="hidden" id="delete-id">
+                    <div style="display:flex;justify-content:flex-end;gap:6px;">
+                        <button class="win-btn win-btn-default" onclick="confirmDelete()">Yes</button>
+                        <button class="win-btn" onclick="closeDeleteModal()">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- ===== FOOTER ===== -->
-    <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style="border-top:1px solid var(--border);">
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3" style="color:var(--fg-muted);font-size:13px;">
-            <span>FinPulse Dashboard — Built with care</span>
-            <span>Data is stored locally in your browser</span>
+    <!-- ===== TASKBAR ===== -->
+    <div class="taskbar">
+        <div class="taskbar-start">
+            <i class="fa-brands fa-windows" style="font-size:14px;"></i>
+            Start
         </div>
-    </footer>
+        <div style="width:1px;height:22px;background:rgba(255,255,255,0.3);margin:0 2px;"></div>
+        <div class="taskbar-item active-window">
+            <i class="fa-solid fa-chart-pie" style="font-size:10px;"></i>
+            FinPulse — Finance Dashboard
+        </div>
+        <div class="taskbar-clock">
+            <i class="fa-solid fa-volume-up" style="font-size:10px;"></i>
+            <span id="taskbar-time"></span>
+        </div>
+    </div>
 
     <script>
         // ===================================================================
@@ -576,19 +983,18 @@
         const STARTING_BALANCE = 8500;
         const STORAGE_KEY = 'finpulse_data';
 
-        // Category definitions with icons and colors
         const CATEGORIES = {
-            'Salary':        { icon: 'fa-briefcase',     color: '#00E89D' },
-            'Freelance':     { icon: 'fa-laptop-code',   color: '#34D399' },
-            'Investments':   { icon: 'fa-chart-line',    color: '#22D3EE' },
-            'Food & Dining': { icon: 'fa-utensils',      color: '#FF5C72' },
-            'Transportation':{ icon: 'fa-car',           color: '#FFB547' },
-            'Shopping':      { icon: 'fa-bag-shopping',  color: '#F97316' },
-            'Entertainment': { icon: 'fa-film',          color: '#38BDF8' },
-            'Utilities':     { icon: 'fa-bolt',          color: '#FB923C' },
-            'Healthcare':    { icon: 'fa-heart-pulse',   color: '#F472B6' },
-            'Rent':          { icon: 'fa-house',         color: '#94A3B8' },
-            'Education':     { icon: 'fa-graduation-cap',color: '#A3E635' },
+            'Salary':        { icon: 'fa-briefcase',     color: '#0A8040' },
+            'Freelance':     { icon: 'fa-laptop-code',   color: '#1D7A3A' },
+            'Investments':   { icon: 'fa-chart-line',    color: '#006699' },
+            'Food & Dining': { icon: 'fa-utensils',      color: '#CC3300' },
+            'Transportation':{ icon: 'fa-car',           color: '#CC7700' },
+            'Shopping':      { icon: 'fa-bag-shopping',  color: '#883300' },
+            'Entertainment': { icon: 'fa-film',          color: '#0044AA' },
+            'Utilities':     { icon: 'fa-bolt',          color: '#AA5500' },
+            'Healthcare':    { icon: 'fa-heart-pulse',   color: '#AA0066' },
+            'Rent':          { icon: 'fa-house',         color: '#555555' },
+            'Education':     { icon: 'fa-graduation-cap',color: '#447700' },
         };
 
         const EXPENSE_CATEGORIES = ['Food & Dining','Transportation','Shopping','Entertainment','Utilities','Healthcare','Rent','Education'];
@@ -599,7 +1005,6 @@
         // ===================================================================
         function createMockData() {
             return [
-                // December 2024
                 { id: 1,  date:'2024-12-28', description:'Monthly Salary',       amount:5200,   category:'Salary',        type:'income' },
                 { id: 2,  date:'2024-12-27', description:'Whole Foods Market',    amount:134.50, category:'Food & Dining', type:'expense' },
                 { id: 3,  date:'2024-12-26', description:'Uber Ride',             amount:24.80,  category:'Transportation', type:'expense' },
@@ -618,9 +1023,8 @@
                 { id: 16, date:'2024-12-05', description:'Coffee Shop',           amount:18.75,  category:'Food & Dining', type:'expense' },
                 { id: 17, date:'2024-12-03', description:'Clothing Store',        amount:156,    category:'Shopping',      type:'expense' },
                 { id: 18, date:'2024-12-01', description:'Internet Bill',         amount:65,     category:'Utilities',     type:'expense' },
-                // November 2024
                 { id: 19, date:'2024-11-28', description:'Monthly Salary',        amount:5200,   category:'Salary',        type:'income' },
-                { id: 20, date:'2024-11-26', description:'Trader Joe\'s',         amount:112.30, category:'Food & Dining', type:'expense' },
+                { id: 20, date:'2024-11-26', description:"Trader Joe's",          amount:112.30, category:'Food & Dining', type:'expense' },
                 { id: 21, date:'2024-11-24', description:'Freelance Design',      amount:1200,   category:'Freelance',     type:'income' },
                 { id: 22, date:'2024-11-22', description:'Movie Tickets',         amount:28,     category:'Entertainment', type:'expense' },
                 { id: 23, date:'2024-11-20', description:'Monthly Rent',          amount:1500,   category:'Rent',          type:'expense' },
@@ -634,7 +1038,6 @@
                 { id: 31, date:'2024-11-04', description:'Gym Membership',        amount:45,     category:'Healthcare',    type:'expense' },
                 { id: 32, date:'2024-11-02', description:'Internet Bill',         amount:65,     category:'Utilities',     type:'expense' },
                 { id: 33, date:'2024-11-01', description:'Stock Sale',            amount:340,    category:'Investments',   type:'income' },
-                // October 2024
                 { id: 34, date:'2024-10-30', description:'Monthly Salary',        amount:5200,   category:'Salary',        type:'income' },
                 { id: 35, date:'2024-10-28', description:'Grocery Shopping',      amount:145.60, category:'Food & Dining', type:'expense' },
                 { id: 36, date:'2024-10-26', description:'Freelance Writing',     amount:600,    category:'Freelance',     type:'income' },
@@ -659,13 +1062,11 @@
         const Store = {
             state: {
                 role: 'viewer',
-                darkMode: true,
+                darkMode: false,
                 transactions: [],
                 filters: { search: '', category: 'all', type: 'all', sort: 'date-desc' },
             },
             listeners: [],
-
-            // Load persisted state from localStorage
             init() {
                 try {
                     const saved = localStorage.getItem(STORAGE_KEY);
@@ -677,39 +1078,28 @@
                             this.state.transactions = createMockData();
                         }
                         if (parsed.role) this.state.role = parsed.role;
-                        if (parsed.darkMode !== undefined) this.state.darkMode = parsed.darkMode;
                     } else {
                         this.state.transactions = createMockData();
                     }
                 } catch (e) {
                     this.state.transactions = createMockData();
                 }
-                // Ensure nextId exists
                 this.state.nextId = Math.max(0, ...this.state.transactions.map(t => t.id)) + 1;
             },
-
-            // Update state and notify listeners
             setState(updates) {
                 Object.assign(this.state, updates);
                 this.persist();
                 this.notify();
             },
-
-            // Subscribe to state changes
             subscribe(fn) { this.listeners.push(fn); },
-
-            // Notify all subscribers
             notify() { this.listeners.forEach(fn => fn(this.state)); },
-
-            // Persist to localStorage
             persist() {
                 try {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify({
                         transactions: this.state.transactions,
                         role: this.state.role,
-                        darkMode: this.state.darkMode,
                     }));
-                } catch (e) { /* Storage full or unavailable */ }
+                } catch (e) {}
             }
         };
 
@@ -728,9 +1118,7 @@
             return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
 
-        function getMonthKey(dateStr) {
-            return dateStr.substring(0, 7); // "2024-12"
-        }
+        function getMonthKey(dateStr) { return dateStr.substring(0, 7); }
 
         function getMonthLabel(monthKey) {
             const [y, m] = monthKey.split('-');
@@ -738,22 +1126,6 @@
             return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
         }
 
-        // Animate a number counter in an element
-        function animateValue(element, end, duration = 800) {
-            const start = 0;
-            const startTime = performance.now();
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                const current = start + (end - start) * eased;
-                element.textContent = formatCurrency(current);
-                if (progress < 1) requestAnimationFrame(update);
-            }
-            requestAnimationFrame(update);
-        }
-
-        // Show toast notification
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -764,16 +1136,13 @@
             requestAnimationFrame(() => toast.classList.add('show'));
             setTimeout(() => {
                 toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 350);
+                setTimeout(() => toast.remove(), 250);
             }, 3000);
         }
 
-        // Get filtered & sorted transactions
         function getFilteredTransactions() {
             const { transactions, filters } = Store.state;
             let result = [...transactions];
-
-            // Search filter
             if (filters.search) {
                 const q = filters.search.toLowerCase();
                 result = result.filter(t =>
@@ -781,54 +1150,46 @@
                     t.category.toLowerCase().includes(q)
                 );
             }
-
-            // Category filter
-            if (filters.category !== 'all') {
-                result = result.filter(t => t.category === filters.category);
-            }
-
-            // Type filter
-            if (filters.type !== 'all') {
-                result = result.filter(t => t.type === filters.type);
-            }
-
-            // Sorting
+            if (filters.category !== 'all') result = result.filter(t => t.category === filters.category);
+            if (filters.type !== 'all') result = result.filter(t => t.type === filters.type);
             switch (filters.sort) {
                 case 'date-desc': result.sort((a, b) => b.date.localeCompare(a.date)); break;
                 case 'date-asc':  result.sort((a, b) => a.date.localeCompare(b.date)); break;
                 case 'amount-desc': result.sort((a, b) => b.amount - a.amount); break;
                 case 'amount-asc':  result.sort((a, b) => a.amount - b.amount); break;
             }
-
             return result;
         }
 
-        // Get computed stats from ALL transactions (not filtered)
         function computeStats() {
             const txns = Store.state.transactions;
             const income = txns.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
             const expenses = txns.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
             const balance = STARTING_BALANCE + income - expenses;
-            const incomeCount = txns.filter(t => t.type === 'income').length;
-            const expenseCount = txns.filter(t => t.type === 'expense').length;
-            return { income, expenses, balance, incomeCount, expenseCount };
+            return { income, expenses, balance,
+                incomeCount: txns.filter(t => t.type === 'income').length,
+                expenseCount: txns.filter(t => t.type === 'expense').length
+            };
+        }
+
+        function hexToRgb(hex) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `${r},${g},${b}`;
         }
 
         // ===================================================================
         // RENDER FUNCTIONS
         // ===================================================================
-
-        // Render summary cards with animated counters
         function renderSummary() {
             const stats = computeStats();
-            animateValue(document.getElementById('total-balance'), stats.balance);
-            animateValue(document.getElementById('total-income'), stats.income);
-            animateValue(document.getElementById('total-expenses'), stats.expenses);
-
+            document.getElementById('total-balance').textContent = formatCurrency(stats.balance);
+            document.getElementById('total-income').textContent = formatCurrency(stats.income);
+            document.getElementById('total-expenses').textContent = formatCurrency(stats.expenses);
             document.getElementById('income-count').textContent = `${stats.incomeCount} transaction${stats.incomeCount !== 1 ? 's' : ''}`;
             document.getElementById('expense-count').textContent = `${stats.expenseCount} transaction${stats.expenseCount !== 1 ? 's' : ''}`;
 
-            // Balance trend: compute month-over-month change
             const txns = Store.state.transactions;
             const months = [...new Set(txns.map(t => getMonthKey(t.date)))].sort();
             if (months.length >= 2) {
@@ -838,16 +1199,17 @@
                 const prevIncome = txns.filter(t => getMonthKey(t.date) === prevMonth && t.type === 'income').reduce((s, t) => s + t.amount, 0);
                 const diff = lastIncome - prevIncome;
                 const pct = prevIncome > 0 ? ((diff / prevIncome) * 100).toFixed(1) : 0;
-                const arrow = diff >= 0 ? 'up' : 'down';
-                const color = diff >= 0 ? 'var(--income)' : 'var(--expense)';
+                const arrow = diff >= 0 ? '▲' : '▼';
+                const color = diff >= 0 ? '#006400' : '#8B0000';
                 document.getElementById('balance-trend').innerHTML =
-                    `<span style="color:${color};"><i class="fa-solid fa-arrow-${arrow}" style="font-size:11px;"></i> ${Math.abs(pct)}%</span> vs last month`;
+                    `<span style="color:${color};">${arrow} ${Math.abs(pct)}%</span> vs last month`;
             } else {
                 document.getElementById('balance-trend').textContent = 'Starting balance: ' + formatCurrency(STARTING_BALANCE);
             }
+
+            document.getElementById('status-balance').textContent = 'Balance: ' + formatCurrency(stats.balance);
         }
 
-        // Populate category filter dropdown
         function populateCategoryFilter() {
             const select = document.getElementById('category-filter');
             const current = select.value;
@@ -858,99 +1220,80 @@
             select.value = current || 'all';
         }
 
-        // Populate form category dropdown based on type
         function populateFormCategories(type) {
             const select = document.getElementById('form-category');
             const cats = type === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
             select.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join('');
         }
 
-        // Render transaction list
         function renderTransactions() {
             const list = document.getElementById('transaction-list');
             const filtered = getFilteredTransactions();
             const isAdmin = Store.state.role === 'admin';
 
+            document.getElementById('status-txn-count').textContent =
+                `${filtered.length} of ${Store.state.transactions.length} transaction${Store.state.transactions.length !== 1 ? 's' : ''}`;
+
             if (filtered.length === 0) {
                 list.innerHTML = `
                     <div class="empty-state">
-                        <i class="fa-solid fa-receipt" style="display:block;"></i>
-                        <p style="font-size:15px;font-weight:600;margin-bottom:4px;">No transactions found</p>
-                        <p style="font-size:13px;">Try adjusting your filters or ${isAdmin ? 'add a new transaction' : 'switch to Admin mode to add data'}.</p>
+                        <i class="fa-solid fa-receipt"></i>
+                        <p style="font-weight:bold;margin-bottom:4px;">No transactions found</p>
+                        <p>${isAdmin ? 'Add a new transaction above.' : 'Try adjusting filters or switch to Admin mode.'}</p>
                     </div>`;
                 return;
             }
 
-            list.innerHTML = filtered.map(t => {
-                const cat = CATEGORIES[t.category] || { icon: 'fa-circle', color: '#94A3B8' };
+            list.innerHTML = filtered.map((t, idx) => {
+                const cat = CATEGORIES[t.category] || { icon: 'fa-circle', color: '#555555' };
                 const sign = t.type === 'income' ? '+' : '-';
-                const amtColor = t.type === 'income' ? 'var(--income)' : 'var(--expense)';
-                const iconBg = t.type === 'income'
-                    ? `rgba(0,232,157,0.12)` : `rgba(${hexToRgb(cat.color)},0.12)`;
-                const iconColor = t.type === 'income' ? 'var(--income)' : cat.color;
+                const amtColor = t.type === 'income' ? '#006400' : '#8B0000';
+                const rowBg = idx % 2 === 0 ? '#FFFFFF' : '#F5F5F0';
 
                 return `
-                <div class="txn-item" data-id="${t.id}">
-                    <div class="txn-icon" style="background:${iconBg};color:${iconColor};">
+                <div class="txn-item" data-id="${t.id}" style="background:${rowBg};">
+                    <div class="txn-icon" style="color:${cat.color};">
                         <i class="fa-solid ${cat.icon}"></i>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <div style="font-weight:600;font-size:14px;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${t.description}">${t.description}</div>
-                        <div style="font-size:12px;color:var(--fg-muted);margin-top:2px;">
-                            <span style="background:${iconBg};color:${iconColor};padding:1px 8px;border-radius:5px;font-weight:500;">${t.category}</span>
-                            <span style="margin-left:10px;">${formatDate(t.date)}</span>
-                        </div>
+                    <div style="flex:2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;" title="${t.description}">
+                        ${t.description}
                     </div>
-                    <div class="text-right flex-shrink-0 flex items-center gap-2">
-                        <div>
-                            <div style="font-weight:700;font-size:15px;color:${amtColor};font-family:'Space Grotesk',sans-serif;">${sign}${formatCurrency(t.amount)}</div>
-                            <div style="font-size:11px;color:var(--fg-muted);text-transform:uppercase;letter-spacing:0.5px;">${t.type}</div>
-                        </div>
+                    <div style="width:120px;font-size:11px;">
+                        <span style="color:${cat.color};">[${t.category}]</span>
+                    </div>
+                    <div style="width:90px;font-size:11px;color:#505050;">${formatDate(t.date)}</div>
+                    <div style="width:100px;text-align:right;font-weight:bold;font-size:11px;color:${amtColor};">${sign}${formatCurrency(t.amount)}</div>
+                    <div style="width:50px;font-size:10px;color:#505050;text-transform:uppercase;">${t.type}</div>
+                    <div style="width:60px;display:flex;gap:2px;">
                         ${isAdmin ? `
-                        <div class="flex gap-1" style="margin-left:4px;">
-                            <button class="btn-icon" onclick="openEditModal(${t.id})" title="Edit" aria-label="Edit transaction"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button class="btn-icon danger" onclick="openDeleteModal(${t.id})" title="Delete" aria-label="Delete transaction"><i class="fa-solid fa-trash-can"></i></button>
-                        </div>` : ''}
+                        <button class="win-btn-icon" onclick="openEditModal(${t.id})" title="Edit"><i class="fa-solid fa-pen-to-square" style="font-size:10px;"></i></button>
+                        <button class="win-btn-icon" onclick="openDeleteModal(${t.id})" title="Delete" style="color:#8B0000;"><i class="fa-solid fa-trash-can" style="font-size:10px;"></i></button>
+                        ` : ''}
                     </div>
                 </div>`;
             }).join('');
         }
 
-        // Helper: hex to rgb string
-        function hexToRgb(hex) {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `${r},${g},${b}`;
-        }
-
-        // Render insights section
         function renderInsights() {
             const section = document.getElementById('insights-section');
             const txns = Store.state.transactions;
 
             if (txns.length === 0) {
                 section.innerHTML = `
-                    <div class="dash-card insight-card insight-accent p-6 sm:col-span-3">
-                        <div class="empty-state" style="padding:24px;">
-                            <i class="fa-solid fa-lightbulb" style="display:block;"></i>
-                            <p>Add transactions to see insights</p>
-                        </div>
+                    <div class="insight-panel" style="grid-column:1/-1;">
+                        <div class="win-titlebar"><i class="fa-solid fa-lightbulb" style="font-size:11px;"></i><span style="margin-left:4px;font-size:11px;font-weight:bold;">Insights</span></div>
+                        <div class="insight-body empty-state"><p>Add transactions to see insights</p></div>
                     </div>`;
                 return;
             }
 
-            // Insight 1: Highest spending category
             const expenseTxns = txns.filter(t => t.type === 'expense');
             const catTotals = {};
-            expenseTxns.forEach(t => {
-                catTotals[t.category] = (catTotals[t.category] || 0) + t.amount;
-            });
+            expenseTxns.forEach(t => { catTotals[t.category] = (catTotals[t.category] || 0) + t.amount; });
             const topCat = Object.entries(catTotals).sort((a, b) => b[1] - a[1])[0];
-            const topCatInfo = CATEGORIES[topCat[0]] || { icon: 'fa-circle', color: '#94A3B8' };
+            const topCatInfo = CATEGORIES[topCat[0]] || { icon: 'fa-circle', color: '#555555' };
             const topCatPct = expenseTxns.length > 0 ? ((topCat[1] / expenseTxns.reduce((s, t) => s + t.amount, 0)) * 100).toFixed(0) : 0;
 
-            // Insight 2: Monthly comparison (last 2 months with data)
             const months = [...new Set(txns.map(t => getMonthKey(t.date)))].sort();
             let monthlyHTML = '';
             if (months.length >= 2) {
@@ -962,58 +1305,60 @@
                 const pct = prevExp > 0 ? ((Math.abs(diff) / prevExp) * 100).toFixed(1) : 0;
                 const isUp = diff > 0;
                 monthlyHTML = `
-                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                        <span style="font-size:28px;font-weight:700;font-family:'Space Grotesk',sans-serif;color:${isUp ? 'var(--expense)' : 'var(--income)'};">
-                            ${isUp ? '+' : '-'}${pct}%
-                        </span>
-                        <i class="fa-solid fa-arrow-${isUp ? 'up' : 'down'}" style="color:${isUp ? 'var(--expense)' : 'var(--income)'};"></i>
-                    </div>
-                    <div style="font-size:13px;color:var(--fg-muted);line-height:1.6;">
-                        ${getMonthLabel(curr)} spending vs ${getMonthLabel(prev)}<br>
-                        <span style="color:var(--fg);font-weight:600;">${formatCurrency(currExp)}</span> vs <span style="color:var(--fg);font-weight:600;">${formatCurrency(prevExp)}</span>
+                    <div style="font-size:18px;font-weight:bold;color:${isUp ? '#8B0000' : '#006400'};">${isUp ? '▲' : '▼'} ${pct}%</div>
+                    <div style="font-size:10px;color:#505050;margin-top:4px;">
+                        ${getMonthLabel(curr)} vs ${getMonthLabel(prev)}<br>
+                        <b>${formatCurrency(currExp)}</b> vs <b>${formatCurrency(prevExp)}</b>
                     </div>`;
             } else {
-                monthlyHTML = `<p style="color:var(--fg-muted);font-size:13px;">Need at least 2 months of data for comparison.</p>`;
+                monthlyHTML = `<p style="font-size:10px;color:#505050;">Need at least 2 months of data.</p>`;
             }
 
-            // Insight 3: Savings rate
             const totalIncome = txns.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
             const totalExpenses = expenseTxns.reduce((s, t) => s + t.amount, 0);
             const savingsRate = totalIncome > 0 ? (((totalIncome - totalExpenses) / totalIncome) * 100).toFixed(1) : 0;
             const netSaved = totalIncome - totalExpenses;
 
             section.innerHTML = `
-                <div class="dash-card insight-card insight-accent p-6">
-                    <div style="font-size:12px;font-weight:600;color:var(--fg-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">Top Spending Category</div>
-                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-                        <div style="width:40px;height:40px;border-radius:10px;background:rgba(${hexToRgb(topCatInfo.color)},0.12);color:${topCatInfo.color};display:flex;align-items:center;justify-content:center;font-size:16px;">
-                            <i class="fa-solid ${topCatInfo.icon}"></i>
+                <div class="insight-panel">
+                    <div class="win-titlebar" style="font-size:11px;background:linear-gradient(to right,#4A2070,#9060B0);">
+                        <i class="fa-solid fa-trophy" style="font-size:11px;"></i>
+                        <span style="margin-left:4px;font-size:11px;font-weight:bold;">Top Spending Category</span>
+                    </div>
+                    <div class="insight-body">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                            <i class="fa-solid ${topCatInfo.icon}" style="color:${topCatInfo.color};font-size:18px;"></i>
+                            <div>
+                                <div style="font-weight:bold;font-size:12px;">${topCat[0]}</div>
+                                <div style="font-size:10px;color:#505050;">${formatCurrency(topCat[1])} spent</div>
+                            </div>
                         </div>
-                        <div>
-                            <div style="font-weight:700;font-size:16px;color:var(--fg);font-family:'Space Grotesk',sans-serif;">${topCat[0]}</div>
-                            <div style="font-size:13px;color:var(--fg-muted);">${formatCurrency(topCat[1])} spent</div>
+                        <div class="win-progress">
+                            <div class="win-progress-bar" style="width:${topCatPct}%;"></div>
                         </div>
+                        <div style="font-size:10px;color:#505050;text-align:right;margin-top:2px;">${topCatPct}% of total expenses</div>
                     </div>
-                    <div style="background:var(--bg-subtle);border-radius:6px;height:6px;overflow:hidden;">
-                        <div style="height:100%;width:${topCatPct}%;background:${topCatInfo.color};border-radius:6px;transition:width 0.6s;"></div>
-                    </div>
-                    <div style="font-size:11px;color:var(--fg-muted);margin-top:6px;text-align:right;">${topCatPct}% of total expenses</div>
                 </div>
-
-                <div class="dash-card insight-card insight-gold p-6">
-                    <div style="font-size:12px;font-weight:600;color:var(--fg-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">Monthly Comparison</div>
-                    ${monthlyHTML}
-                </div>
-
-                <div class="dash-card insight-card insight-cyan p-6">
-                    <div style="font-size:12px;font-weight:600;color:var(--fg-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">Savings Rate</div>
-                    <div style="font-size:36px;font-weight:700;font-family:'Space Grotesk',sans-serif;color:var(--cyan);line-height:1;">${savingsRate}%</div>
-                    <div style="font-size:13px;color:var(--fg-muted);margin-top:8px;line-height:1.6;">
-                        You've saved <span style="color:var(--fg);font-weight:600;">${formatCurrency(netSaved)}</span> overall<br>
-                        from <span style="color:var(--fg);font-weight:600;">${formatCurrency(totalIncome)}</span> total income
+                <div class="insight-panel">
+                    <div class="win-titlebar" style="font-size:11px;background:linear-gradient(to right,#7A5A00,#C09030);">
+                        <i class="fa-solid fa-calendar" style="font-size:11px;"></i>
+                        <span style="margin-left:4px;font-size:11px;font-weight:bold;">Monthly Comparison</span>
                     </div>
-                    <div style="background:var(--bg-subtle);border-radius:6px;height:6px;overflow:hidden;margin-top:12px;">
-                        <div style="height:100%;width:${Math.min(100, savingsRate)}%;background:var(--cyan);border-radius:6px;transition:width 0.6s;"></div>
+                    <div class="insight-body">${monthlyHTML}</div>
+                </div>
+                <div class="insight-panel">
+                    <div class="win-titlebar" style="font-size:11px;background:linear-gradient(to right,#005070,#0090B0);">
+                        <i class="fa-solid fa-piggy-bank" style="font-size:11px;"></i>
+                        <span style="margin-left:4px;font-size:11px;font-weight:bold;">Savings Rate</span>
+                    </div>
+                    <div class="insight-body">
+                        <div style="font-size:22px;font-weight:bold;color:#005070;line-height:1;">${savingsRate}%</div>
+                        <div style="font-size:10px;color:#505050;margin-top:4px;">
+                            Saved <b>${formatCurrency(netSaved)}</b> of <b>${formatCurrency(totalIncome)}</b> total income
+                        </div>
+                        <div class="win-progress" style="margin-top:8px;">
+                            <div class="win-progress-bar" style="width:${Math.min(100, savingsRate)}%;background:#005070;"></div>
+                        </div>
                     </div>
                 </div>`;
         }
@@ -1023,13 +1368,6 @@
         // ===================================================================
         let balanceChart = null;
         let categoryChart = null;
-
-        function getChartTextColor() {
-            return Store.state.darkMode ? '#7A8299' : '#6B7280';
-        }
-        function getChartGridColor() {
-            return Store.state.darkMode ? 'rgba(127,130,153,0.1)' : 'rgba(107,114,128,0.1)';
-        }
 
         function renderBalanceChart() {
             const canvas = document.getElementById('balance-chart');
@@ -1045,7 +1383,6 @@
             canvas.style.display = 'block';
             emptyEl.style.display = 'none';
 
-            // Compute running balance
             const sorted = [...txns].sort((a, b) => a.date.localeCompare(b.date));
             let running = STARTING_BALANCE;
             const dataPoints = [{ x: sorted[0].date, y: running }];
@@ -1057,26 +1394,19 @@
             if (balanceChart) balanceChart.destroy();
 
             const ctx = canvas.getContext('2d');
-            const gradient = ctx.createLinearGradient(0, 0, 0, 260);
-            gradient.addColorStop(0, Store.state.darkMode ? 'rgba(0,232,157,0.2)' : 'rgba(0,192,127,0.15)');
-            gradient.addColorStop(1, Store.state.darkMode ? 'rgba(0,232,157,0.0)' : 'rgba(0,192,127,0.0)');
-
             balanceChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     datasets: [{
                         label: 'Balance',
                         data: dataPoints,
-                        borderColor: Store.state.darkMode ? '#00E89D' : '#00C07F',
-                        backgroundColor: gradient,
-                        borderWidth: 2.5,
-                        pointRadius: 0,
-                        pointHoverRadius: 6,
-                        pointHoverBackgroundColor: Store.state.darkMode ? '#00E89D' : '#00C07F',
-                        pointHoverBorderColor: '#fff',
-                        pointHoverBorderWidth: 2,
+                        borderColor: '#000080',
+                        backgroundColor: 'rgba(0,0,128,0.1)',
+                        borderWidth: 1.5,
+                        pointRadius: 2,
+                        pointBackgroundColor: '#000080',
                         fill: true,
-                        tension: 0.35,
+                        tension: 0.1,
                     }]
                 },
                 options: {
@@ -1086,13 +1416,13 @@
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: Store.state.darkMode ? '#1C2235' : '#FFFFFF',
-                            titleColor: Store.state.darkMode ? '#F0F2F5' : '#111827',
-                            bodyColor: Store.state.darkMode ? '#7A8299' : '#6B7280',
-                            borderColor: Store.state.darkMode ? '#2A3348' : '#E2E5EC',
+                            backgroundColor: '#ECE9D8',
+                            titleColor: '#000000',
+                            bodyColor: '#505050',
+                            borderColor: '#808080',
                             borderWidth: 1,
-                            padding: 12,
-                            cornerRadius: 10,
+                            padding: 6,
+                            cornerRadius: 0,
                             displayColors: false,
                             callbacks: {
                                 title: (items) => formatDate(items[0].parsed.x),
@@ -1103,20 +1433,20 @@
                     scales: {
                         x: {
                             type: 'time',
-                            time: { unit: 'month', displayFormats: { month: 'MMM yyyy' } },
-                            ticks: { color: getChartTextColor(), font: { family: 'Space Grotesk', size: 11 } },
-                            grid: { color: getChartGridColor() },
-                            border: { display: false },
+                            time: { unit: 'month', displayFormats: { month: 'MMM yy' } },
+                            ticks: { color: '#505050', font: { family: 'Tahoma', size: 10 } },
+                            grid: { color: 'rgba(0,0,0,0.08)' },
+                            border: { display: true, color: '#808080' },
                         },
                         y: {
                             ticks: {
-                                color: getChartTextColor(),
-                                font: { family: 'Space Grotesk', size: 11 },
+                                color: '#505050',
+                                font: { family: 'Tahoma', size: 10 },
                                 callback: (v) => '$' + (v / 1000).toFixed(0) + 'k',
                                 maxTicksLimit: 5,
                             },
-                            grid: { color: getChartGridColor() },
-                            border: { display: false },
+                            grid: { color: 'rgba(0,0,0,0.08)' },
+                            border: { display: true, color: '#808080' },
                         }
                     }
                 }
@@ -1137,59 +1467,40 @@
             canvas.style.display = 'block';
             emptyEl.style.display = 'none';
 
-            // Aggregate by category
             const catTotals = {};
-            expenses.forEach(t => {
-                catTotals[t.category] = (catTotals[t.category] || 0) + t.amount;
-            });
+            expenses.forEach(t => { catTotals[t.category] = (catTotals[t.category] || 0) + t.amount; });
             const sorted = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
             const labels = sorted.map(e => e[0]);
             const data = sorted.map(e => e[1]);
-            const colors = labels.map(l => CATEGORIES[l]?.color || '#94A3B8');
+            const colors = labels.map(l => CATEGORIES[l]?.color || '#555555');
 
             if (categoryChart) categoryChart.destroy();
-
             const ctx = canvas.getContext('2d');
             categoryChart = new Chart(ctx, {
                 type: 'doughnut',
-                data: {
-                    labels,
-                    datasets: [{
-                        data,
-                        backgroundColor: colors,
-                        borderColor: Store.state.darkMode ? '#161B28' : '#FFFFFF',
-                        borderWidth: 3,
-                        hoverOffset: 6,
-                    }]
-                },
+                data: { labels, datasets: [{ data, backgroundColor: colors, borderColor: '#ECE9D8', borderWidth: 2, hoverOffset: 4 }] },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '65%',
+                    cutout: '55%',
                     plugins: {
                         legend: {
                             position: 'bottom',
                             labels: {
-                                color: getChartTextColor(),
-                                font: { family: 'DM Sans', size: 11 },
-                                boxWidth: 10,
-                                boxHeight: 10,
-                                borderRadius: 3,
-                                useBorderRadius: true,
-                                padding: 12,
+                                color: '#000000',
+                                font: { family: 'Tahoma', size: 10 },
+                                boxWidth: 10, boxHeight: 10, padding: 8,
                             }
                         },
                         tooltip: {
-                            backgroundColor: Store.state.darkMode ? '#1C2235' : '#FFFFFF',
-                            titleColor: Store.state.darkMode ? '#F0F2F5' : '#111827',
-                            bodyColor: Store.state.darkMode ? '#7A8299' : '#6B7280',
-                            borderColor: Store.state.darkMode ? '#2A3348' : '#E2E5EC',
+                            backgroundColor: '#ECE9D8',
+                            titleColor: '#000000',
+                            bodyColor: '#505050',
+                            borderColor: '#808080',
                             borderWidth: 1,
-                            padding: 12,
-                            cornerRadius: 10,
-                            callbacks: {
-                                label: (item) => ` ${item.label}: ${formatCurrency(item.parsed)}`
-                            }
+                            padding: 6,
+                            cornerRadius: 0,
+                            callbacks: { label: (item) => ` ${item.label}: ${formatCurrency(item.parsed)}` }
                         }
                     }
                 }
@@ -1197,32 +1508,23 @@
         }
 
         // ===================================================================
-        // ROLE & THEME MANAGEMENT
+        // ROLE & THEME
         // ===================================================================
         function setRole(role) {
             Store.setState({ role });
-            // Update toggle buttons
             document.querySelectorAll('.role-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.role === role);
             });
-            // Show/hide admin elements
             document.querySelectorAll('.admin-only').forEach(el => {
                 el.style.display = role === 'admin' ? '' : 'none';
             });
-            // Re-render transactions to show/hide action buttons
             renderTransactions();
             showToast(`Switched to ${role === 'admin' ? 'Admin' : 'Viewer'} mode`, 'info');
         }
 
         function toggleTheme() {
-            const newMode = !Store.state.darkMode;
-            Store.setState({ darkMode: newMode });
-            document.documentElement.setAttribute('data-theme', newMode ? 'dark' : 'light');
-            document.getElementById('theme-btn').innerHTML =
-                `<i class="fa-solid fa-${newMode ? 'moon' : 'sun'}"></i>`;
-            // Re-render charts with new colors
-            renderBalanceChart();
-            renderCategoryChart();
+            // In Win2k style there's really only one theme — but we allow a high-contrast toggle
+            showToast('Theme is locked to Windows 2000 Classic!', 'info');
         }
 
         // ===================================================================
@@ -1241,7 +1543,7 @@
         // ===================================================================
         function openAddModal() {
             document.getElementById('modal-title').textContent = 'Add Transaction';
-            document.getElementById('form-submit-btn').textContent = 'Save Transaction';
+            document.getElementById('form-submit-btn').textContent = 'OK';
             document.getElementById('form-id').value = '';
             document.getElementById('form-desc').value = '';
             document.getElementById('form-amount').value = '';
@@ -1255,27 +1557,19 @@
             const txn = Store.state.transactions.find(t => t.id === id);
             if (!txn) return;
             document.getElementById('modal-title').textContent = 'Edit Transaction';
-            document.getElementById('form-submit-btn').textContent = 'Update Transaction';
+            document.getElementById('form-submit-btn').textContent = 'OK';
             document.getElementById('form-id').value = txn.id;
             document.getElementById('form-desc').value = txn.description;
             document.getElementById('form-amount').value = txn.amount;
             document.getElementById('form-date').value = txn.date;
             document.getElementById(`type-${txn.type}`).checked = true;
             populateFormCategories(txn.type);
-            // Set category after populating
-            setTimeout(() => {
-                document.getElementById('form-category').value = txn.category;
-            }, 0);
+            setTimeout(() => { document.getElementById('form-category').value = txn.category; }, 0);
             document.getElementById('txn-modal').classList.add('open');
         }
 
-        function closeModal() {
-            document.getElementById('txn-modal').classList.remove('open');
-        }
-
-        function handleModalOverlayClick(e) {
-            if (e.target === e.currentTarget) closeModal();
-        }
+        function closeModal() { document.getElementById('txn-modal').classList.remove('open'); }
+        function handleModalOverlayClick(e) { if (e.target === e.currentTarget) closeModal(); }
 
         function handleFormSubmit(e) {
             e.preventDefault();
@@ -1292,24 +1586,12 @@
             }
 
             const transactions = [...Store.state.transactions];
-
             if (id) {
-                // Edit existing
                 const idx = transactions.findIndex(t => t.id === parseInt(id));
-                if (idx !== -1) {
-                    transactions[idx] = { ...transactions[idx], description: desc, amount, category, date, type };
-                }
+                if (idx !== -1) transactions[idx] = { ...transactions[idx], description: desc, amount, category, date, type };
                 showToast('Transaction updated successfully', 'success');
             } else {
-                // Add new
-                transactions.push({
-                    id: Store.state.nextId++,
-                    description: desc,
-                    amount,
-                    category,
-                    date,
-                    type,
-                });
+                transactions.push({ id: Store.state.nextId++, description: desc, amount, category, date, type });
                 showToast('Transaction added successfully', 'success');
             }
 
@@ -1318,29 +1600,20 @@
             fullRender();
         }
 
-        // Type radio change handler to update category options
         document.querySelectorAll('input[name="form-type"]').forEach(radio => {
             radio.addEventListener('change', () => populateFormCategories(radio.value));
         });
 
-        // Delete modal
         function openDeleteModal(id) {
             document.getElementById('delete-id').value = id;
             document.getElementById('delete-modal').classList.add('open');
         }
-
-        function closeDeleteModal() {
-            document.getElementById('delete-modal').classList.remove('open');
-        }
-
-        function handleDeleteOverlayClick(e) {
-            if (e.target === e.currentTarget) closeDeleteModal();
-        }
+        function closeDeleteModal() { document.getElementById('delete-modal').classList.remove('open'); }
+        function handleDeleteOverlayClick(e) { if (e.target === e.currentTarget) closeDeleteModal(); }
 
         function confirmDelete() {
             const id = parseInt(document.getElementById('delete-id').value);
-            const transactions = Store.state.transactions.filter(t => t.id !== id);
-            Store.setState({ transactions });
+            Store.setState({ transactions: Store.state.transactions.filter(t => t.id !== id) });
             closeDeleteModal();
             showToast('Transaction deleted', 'success');
             fullRender();
@@ -1351,10 +1624,7 @@
         // ===================================================================
         function exportCSV() {
             const txns = getFilteredTransactions();
-            if (txns.length === 0) {
-                showToast('No transactions to export.', 'error');
-                return;
-            }
+            if (txns.length === 0) { showToast('No transactions to export.', 'error'); return; }
             const headers = ['Date', 'Description', 'Category', 'Type', 'Amount'];
             const rows = txns.map(t => [t.date, `"${t.description}"`, t.category, t.type, t.amount.toFixed(2)]);
             const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
@@ -1362,11 +1632,24 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `finpulse_transactions_${new Date().toISOString().slice(0, 10)}.csv`;
+            a.download = `finpulse_${new Date().toISOString().slice(0, 10)}.csv`;
             a.click();
             URL.revokeObjectURL(url);
             showToast(`Exported ${txns.length} transactions`, 'success');
         }
+
+        // ===================================================================
+        // TASKBAR CLOCK
+        // ===================================================================
+        function updateClock() {
+            const el = document.getElementById('taskbar-time');
+            const now = new Date();
+            el.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('status-date').textContent =
+                now.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+        }
+        updateClock();
+        setInterval(updateClock, 10000);
 
         // ===================================================================
         // FULL RENDER
@@ -1383,41 +1666,17 @@
         // INITIALIZATION
         // ===================================================================
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize store (loads from localStorage or creates mock data)
             Store.init();
-
-            // Apply saved theme
-            document.documentElement.setAttribute('data-theme', Store.state.darkMode ? 'dark' : 'light');
-            document.getElementById('theme-btn').innerHTML =
-                `<i class="fa-solid fa-${Store.state.darkMode ? 'moon' : 'sun'}"></i>`;
-
-            // Apply saved role
             setRole(Store.state.role);
-
-            // Populate filter dropdowns
             populateCategoryFilter();
 
-            // Chart.js needs the date adapter — load it dynamically
             const script = document.createElement('script');
             script.src = 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js';
-            script.onload = () => {
-                fullRender();
-            };
+            script.onload = () => { fullRender(); };
             document.head.appendChild(script);
 
-            // Subscribe to state changes for selective re-renders
-            Store.subscribe(() => {
-                // Role changes are handled in setRole directly
-                // Theme changes are handled in toggleTheme directly
-                // Transaction changes trigger fullRender from the calling function
-            });
-
-            // Keyboard shortcut: Escape to close modals
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    closeModal();
-                    closeDeleteModal();
-                }
+                if (e.key === 'Escape') { closeModal(); closeDeleteModal(); }
             });
         });
     </script>
